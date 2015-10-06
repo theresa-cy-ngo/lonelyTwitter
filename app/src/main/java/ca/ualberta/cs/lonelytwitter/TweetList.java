@@ -3,22 +3,22 @@ package ca.ualberta.cs.lonelytwitter;
 import java.util.ArrayList;
 
 /**
- * Created by tcngo on 9/29/15.
+ * Created by joshua2 on 9/29/15
  */
-public class TweetList {
-    private Tweet mostRecentTweet;
-    private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
-    private int counter;
-
+public class TweetList extends Object {
+    private Tweet mostRecentTweet; //controller
+    private ArrayList<Tweet> tweets = new ArrayList<Tweet>(); //controller
+    private int counter; //controller
 
     public void add(Tweet tweet) {
-        mostRecentTweet = tweet;
-        tweets.add(tweet);
+        mostRecentTweet = tweet; //controller
+        tweets.add(tweet);//controller
     }
 
     public Tweet getMostRecentTweet() {
         return mostRecentTweet;
-    }
+    } //controller
+
 
     public int getCount() {
         return tweets.size();
@@ -27,25 +27,43 @@ public class TweetList {
     public boolean hasTweet(Tweet tweet) {
         for (counter = 0; counter < tweets.size(); counter++) {
             if (tweets.get(counter) == tweet) {
-                return true;
+                return true;//controller
             }
         }
-        return false;
+        return false; //controller
     }
 
     public void addTweet(Tweet tweet) {
         if (this.hasTweet(tweet)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(); //controller
         } else {
-            tweets.add(tweet);
+            tweets.add(tweet);//controller
         }
 
     }
 
     public ArrayList<Tweet> getTweets() {
-        ArrayList<Tweet> list2 = new ArrayList<Tweet>();
-        list2 = (ArrayList<Tweet>)tweets.clone();
+        ArrayList<Tweet> list2 = new ArrayList<Tweet>(); //controller
+        list2 = (ArrayList<Tweet>)tweets.clone(); //controller
         return list2;
+    }
+
+    private volatile ArrayList<MyObserver> observers = new ArrayList<MyObserver>(); //controller
+
+    public void addObserver(MyObserver observer){
+        observers.add(observer); //controller
+
+    }
+
+    private void notifyAllObservers(){
+        for (MyObserver observer: observers){
+            observer.myNotify(this); //controller
+        }
+
+    }
+
+    public void myNotify(MyObservable observable){
+        notifyAllObservers(); //controller
     }
 
 
