@@ -63,6 +63,15 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
         Tweet tweet = (Tweet) oldTweetsList.getItemAtPosition(0);
         assertEquals("hamburgers", tweet.getText());
 
+
+
+        // Following was taken from https://developer.android.com/training/activity-testing/activity-functional-testing.html
+        // Set up an ActivityMonitor
+        // Set up an ActivityMonitor
+        Instrumentation.ActivityMonitor receiverActivityMonitor =
+                getInstrumentation().addMonitor(EditTweetActivity.class.getName(),
+                        null, false);
+
         activity.runOnUiThread(new Runnable() {
             private Button saveButton;
 
@@ -73,13 +82,6 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
 
         });
         getInstrumentation().waitForIdleSync();
-
-        // Following was taken from https://developer.android.com/training/activity-testing/activity-functional-testing.html
-        // Set up an ActivityMonitor
-        // Set up an ActivityMonitor
-        Instrumentation.ActivityMonitor receiverActivityMonitor =
-                getInstrumentation().addMonitor(EditTweetActivity.class.getName(),
-                        null, false);
 
         // Validate that ReceiverActivity is started
         EditTweetActivity receiverActivity = (EditTweetActivity)
@@ -93,6 +95,46 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
         // Remove the ActivityMonitor
         getInstrumentation().removeMonitor(receiverActivityMonitor);
 
-        //end of test
+        // test that the tweet being shown on the edit screeen is the tweet we clicked on
+        EditTweetActivity activity2 = (EditTweetActivity) getActivity();
+        bodyText = activity2.getBodyText();
+
+        activity2.runOnUiThread(new Runnable() {
+            public void run() {
+                bodyText.setText("hamburgers");
+            }
+
+        });
+        final ListView oldTweetsList2 = activity2.getOldTweetsList();
+        Tweet tweet2 = (Tweet) oldTweetsList2.getItemAtPosition(0);
+        assertEquals("hamburgers", tweet2.getText());
+
+
+        // edit the text of that tweet
+        bodyText.setText("cheeseburgers");
+
+        // save our edits
+        activity2.runOnUiThread(new Runnable() {
+            private Button saveButton;
+
+            public void run() {
+                saveButton.performClick();
+            }
+        });
+        getInstrumentation().waitForIdleSync();
+
+        // assert that our edits were saved into the tweet correctly
+        assertEquals("cheeseburgers", bodyText.getText());
+
+        // assert that our edits are shown on the screen to the user back in the main activity
+        activity.onBackPressed();
+        final ListView oldTweetsList3 = activity2.getOldTweetsList();
+        Tweet tweet3 = (Tweet) oldTweetsList3.getItemAtPosition(0);
+        assertEquals("cheeseburgers", tweet3.getText());
+
+
+        //end of test clear the data
+
+        receiverActivity.finish();
     }
 }
