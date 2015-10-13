@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,10 +27,27 @@ import com.google.gson.reflect.TypeToken;
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav"; //model
+	private ListView oldTweetsList1;
+	private LonelyTwitterActivity activity = this;
+
+	public Button getSaveButton() {
+		return saveButton;
+	}
+
+	private Button saveButton;
+
+	public EditText getBodyText() {
+		return bodyText;
+	}
+
 	private EditText bodyText; //controller
 	private ListView oldTweetsList; //controller
 	private ArrayList<Tweet> tweets = new ArrayList<Tweet>(); //controller
 	private ArrayAdapter<Tweet> adapter; //controller
+
+	public ListView getOldTweetsList() {
+		return oldTweetsList;
+	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -39,14 +57,15 @@ public class LonelyTwitterActivity extends Activity {
 		setContentView(R.layout.main); //view
 
 		bodyText = (EditText) findViewById(R.id.body); //view
-		Button saveButton = (Button) findViewById(R.id.save); //view
+		saveButton = (Button) findViewById(R.id.save);
 		Button clearButton = (Button) findViewById(R.id.clear); //view
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList); //view
+
+		oldTweetsList1 = oldTweetsList;
+		oldTweetsList1 = (ListView) findViewById(R.id.oldTweetsList); //view
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-
 				setResult(RESULT_OK); //model
 				String text = bodyText.getText().toString(); //controller
 				tweets.add(new NormalTweet(text)); //controller
@@ -54,6 +73,14 @@ public class LonelyTwitterActivity extends Activity {
 				saveInFile(); //model - changing stuff on the disk
 				//saveInFile(text, new Date(System.currentTimeMillis()));
 				//finish();
+
+			}
+		});
+
+		oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(this, EditTweetActivity.class);
+				startActivity(intent);
 
 			}
 		});
@@ -66,6 +93,7 @@ public class LonelyTwitterActivity extends Activity {
 				tweets.clear();        // Clears the array - controller
 				adapter.notifyDataSetChanged(); //view
 				saveInFile();        // Uses saveInFile to save the cleared array - model
+
 			}
 		});
 

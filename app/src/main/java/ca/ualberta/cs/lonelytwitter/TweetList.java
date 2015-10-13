@@ -1,10 +1,12 @@
 package ca.ualberta.cs.lonelytwitter;
 
 import java.util.ArrayList;
+import ca.ualberta.cs.lonelytwitter.MyObserver;
 
 /**
  * Created by joshua2 on 9/29/15
  */
+
 public class TweetList extends Object {
     private Tweet mostRecentTweet; //controller
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>(); //controller
@@ -23,6 +25,7 @@ public class TweetList extends Object {
     public int getCount() {
         return tweets.size();
     }
+
 
     public boolean hasTweet(Tweet tweet) {
         for (counter = 0; counter < tweets.size(); counter++) {
@@ -50,11 +53,6 @@ public class TweetList extends Object {
 
     private volatile ArrayList<MyObserver> observers = new ArrayList<MyObserver>(); //controller
 
-    public void addObserver(MyObserver observer){
-        observers.add(observer); //controller
-
-    }
-
     private void notifyAllObservers(){
         for (MyObserver observer: observers){
             observer.myNotify(this); //controller
@@ -66,5 +64,21 @@ public class TweetList extends Object {
         notifyAllObservers(); //controller
     }
 
+
+    private volatile ArrayList<MyObserver> observers = new ArrayList<MyObserver>();
+
+    public void addObserver(MyObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyAllObservers() {
+        for (MyObserver observer : observers) {
+            observer.myNotify(this);
+        }
+    }
+
+    public void myNotify(MyObservable observable) {
+        notifyAllObservers();
+    }
 
 }
