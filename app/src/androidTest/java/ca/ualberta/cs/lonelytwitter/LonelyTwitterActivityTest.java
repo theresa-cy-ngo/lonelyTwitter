@@ -113,6 +113,7 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2 
         // edit the text of that tweet
         bodyText.setText("cheeseburgers");
 
+
         // save our edits
         activity2.runOnUiThread(new Runnable() {
             private Button saveButton;
