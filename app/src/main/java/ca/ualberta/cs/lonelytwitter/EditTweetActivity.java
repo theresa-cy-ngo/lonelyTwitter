@@ -49,7 +49,6 @@ public class EditTweetActivity extends Activity {
         return oldTweetsList;
     }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tweet);
@@ -86,6 +85,7 @@ public class EditTweetActivity extends Activity {
 
             }
         });
+
     }
 
     @Override
@@ -156,4 +156,5 @@ public class EditTweetActivity extends Activity {
             //e.printStackTrace();
         }
     }
+
 }

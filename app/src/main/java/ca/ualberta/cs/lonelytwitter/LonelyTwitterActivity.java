@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class LonelyTwitterActivity extends Activity {
 
+
 	private static final String FILENAME = "file.sav"; //model
 	private ListView oldTweetsList1;
 	private LonelyTwitterActivity activity = this;
@@ -41,6 +42,7 @@ public class LonelyTwitterActivity extends Activity {
 		return bodyText;
 	}
 
+
 	private EditText bodyText; //controller
 	private ListView oldTweetsList; //controller
 	private ArrayList<Tweet> tweets = new ArrayList<Tweet>(); //controller
@@ -49,6 +51,14 @@ public class LonelyTwitterActivity extends Activity {
 	public ListView getOldTweetsList() {
 		return oldTweetsList;
 	}
+
+	public ArrayList<Tweet> getTweets() {
+		return tweets;
+	}
+
+	private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+	private ArrayAdapter<Tweet> adapter;
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -59,6 +69,7 @@ public class LonelyTwitterActivity extends Activity {
 
 		bodyText = (EditText) findViewById(R.id.body); //view
 		saveButton = (Button) findViewById(R.id.save);
+
 		Button clearButton = (Button) findViewById(R.id.clear); //view
 
 		oldTweetsList1 = oldTweetsList;
